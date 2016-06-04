@@ -1,64 +1,44 @@
 # -*- coding: utf-8 -*-
 
+"""
+Basic pytest plugin testing
+"""
 
-def test_bar_fixture(testdir):
-    """Make sure that pytest accepts our fixture."""
 
-    # create a temporary pytest test module
-    testdir.makepyfile("""
-        def test_sth(bar):
-            assert bar == "europython2015"
-    """)
+def test_help_message_without_keys(testdir):
+    """
+    This plugin makes ssh private and public keys mandatory
+    """
 
-    # run pytest with the following cmd args
     result = testdir.runpytest(
-        '--foo=europython2015',
-        '-v'
+        '--help',
     )
 
-    # fnmatch_lines does an assertion internally
-    result.stdout.fnmatch_lines([
-        '*::test_sth PASSED',
+    assert len(result.errlines) > 0
+    result.stderr.fnmatch_lines([
+        '*--ssh-private-key-path*',
     ])
-
-    # make sure that that we get a '0' exit code for the testsuite
-    assert result.ret == 0
 
 
 def test_help_message(testdir):
+    """
+    Check plugin arguments
+    """
+
     result = testdir.runpytest(
         '--help',
+        '--no-logging-overload',
+        '--ssh-private-key-path=foo',
+        '--ssh-public-key-path=bar'
     )
     # fnmatch_lines does an assertion internally
     result.stdout.fnmatch_lines([
         'ansible-docker:',
-        '*--foo=DEST_FOO*Set the value for the fixture "bar".',
+        '*--no-logging-overload',
+        '*--ssh-private-key-path=SSH_PRIVATE_KEY_PATH',
+        '*--ssh-public-key-path=SSH_PUBLIC_KEY_PATH',
+        '*--ansible-limit=ANSIBLE_LIMIT',
+        '*--ansible-groups=ANSIBLE_GROUPS',
+        '*--no-idempotence-check',
+        '*--ansible-idempotence-changed=ANSIBLE_IDEMPOTENCE_CHANGED'
     ])
-
-
-def test_hello_ini_setting(testdir):
-    testdir.makeini("""
-        [pytest]
-        HELLO = world
-    """)
-
-    testdir.makepyfile("""
-        import pytest
-
-        @pytest.fixture
-        def hello(request):
-            return request.config.getini('HELLO')
-
-        def test_hello_world(hello):
-            assert hello == 'world'
-    """)
-
-    result = testdir.runpytest('-v')
-
-    # fnmatch_lines does an assertion internally
-    result.stdout.fnmatch_lines([
-        '*::test_hello_world PASSED',
-    ])
-
-    # make sure that that we get a '0' exit code for the testsuite
-    assert result.ret == 0
