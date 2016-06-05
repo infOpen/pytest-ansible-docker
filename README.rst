@@ -21,6 +21,7 @@ This plugin help to manage Ansible roles and playbook testing with `Docker`_,
 This plugin is used with my Ansible role template: `ìnfopen_role_template`_.
 
 For each Docker image configured, it:
+
 * create a Docker container on localhost
 * import ssh public key to root user account
 * create a temporary inventory file
@@ -28,6 +29,7 @@ For each Docker image configured, it:
 * execute all tests into the container.
 
 If used with `tox`_, you can manage quicly a matrix based testing:
+
 * `tox`_ manage X `Ansible`_ version
 * this plugin help to manage Y Docker systems
 
@@ -36,6 +38,7 @@ Requirements
 ------------
 
 Some requirements:
+
 * a local docker installation (Why not manage remote Docker install later)
 * SSH key pair
 
