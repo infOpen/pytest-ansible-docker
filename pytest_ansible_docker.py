@@ -77,7 +77,7 @@ def pytest_addoption(parser):
 
 
 # Manage logging
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope='module', autouse=True)
 def manage_test_logging(request):
     """
     Logger management used with Ansible docker testing
@@ -160,7 +160,7 @@ def pytest_generate_tests(metafunc):
 
 
 @pytest.fixture
-def TestinfraBackend(request):
+def AnsibleDockerTestinfraBackend(request):
     """
     Boot and stop a docker image.
     """
