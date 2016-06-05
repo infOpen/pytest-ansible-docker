@@ -5,10 +5,6 @@ pytest-ansible-docker
     :target: https://travis-ci.org/infOpen/pytest-ansible-docker
     :alt: See Build Status on Travis CI
 
-.. image:: https://ci.appveyor.com/api/projects/status/github/infOpen/pytest-ansible-docker?branch=master
-    :target: https://ci.appveyor.com/project/infOpen/pytest-ansible-docker/branch/master
-    :alt: See Build Status on AppVeyor
-
 Plugin to manage Ansible roles and plays testing with testinfra, using Docker containers
 
 ----
@@ -19,13 +15,29 @@ This `Pytest`_ plugin was generated with `Cookiecutter`_ along with `@hackebrot`
 Features
 --------
 
-* TODO
+This plugin help to manage Ansible roles and playbook testing with `Docker`_,
+`Testinfra`_ and `tox`_.
+
+This plugin is used with my Ansible role template: `ìnfopen_role_template`_.
+
+For each Docker image configured, it:
+* create a Docker container on localhost
+* import ssh public key to root user account
+* create a temporary inventory file
+* run one or two provisions (second is used for idempotence testing) using SSH
+* execute all tests into the container.
+
+If used with `tox`_, you can manage quicly a matrix based testing:
+* `tox`_ manage X `Ansible`_ version
+* this plugin help to manage Y Docker systems
 
 
 Requirements
 ------------
 
-* TODO
+Some requirements:
+* a local docker installation (Why not manage remote Docker install later)
+* SSH key pair
 
 
 Installation
@@ -39,12 +51,15 @@ You can install "pytest-ansible-docker" via `pip`_ from `PyPI`_::
 Usage
 -----
 
-* TODO
+I only used this plugin to manage my role testing, locally and on Travis, you
+can check `ìnfopen_role_template`_ for example.
+
 
 Contributing
 ------------
 Contributions are very welcome. Tests can be run with `tox`_, please ensure
 the coverage at least stays the same before you submit a pull request.
+
 
 License
 -------
@@ -69,3 +84,7 @@ If you encounter any problems, please `file an issue`_ along with a detailed des
 .. _`tox`: https://tox.readthedocs.org/en/latest/
 .. _`pip`: https://pypi.python.org/pypi/pip/
 .. _`PyPI`: https://pypi.python.org/pypi
+.. _`Ansible`: https://www.ansible.com/
+.. _`Docker`: https://www.docker.com/
+.. _`Testinfra`: https://github.com/philpep/testinfra
+.. _`ìnfopen_role_template`: https://github.com/infOpen/cookiecutter-ansible-role
