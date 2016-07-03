@@ -215,6 +215,9 @@ def _manage_ansible_provisionning(request, container):
     limit = request.config.option.ansible_limit
     ssh_private_key_path = request.config.option.ssh_private_key_path
 
+    # Install Ansible requirements
+    _install_ansible_requirements(container)
+
     # First role provisionning
     logger.info(' * First role provision: provision testing ...')
     _provision_with_ansible_by_ssh(container, limit, ssh_private_key_path)
@@ -251,7 +254,6 @@ def _manage_inventory_file(request, docker_id, host_ssh_port):
     if is_ansible_v2:
         ansible_prefix = 'ansible'
 
-
     with open('/tmp/{}'.format(docker_id), 'w') as tmp_inventory:
         for group in groups:
             content = ("[{1}]\n{1} {0}_port={2} {0}_host={3}\n".format(
@@ -273,6 +275,22 @@ def _set_authorized_keys(request, container):
 
         logger = logging.getLogger('set_authorized_keys')
         logger.debug('Add public SSH key: %s', public_key)
+
+
+def _install_ansible_requirements(container):
+    """
+    Install Ansible requirements
+    """
+
+    cmd = local_command(
+            'test ! -f ./requirements.yml '
+            '|| ansible-galaxy install -r ./requirements.yml -p ./roles')
+
+    logger = logging.getLogger('install_ansible_requirements')
+    logger.debug('Install Ansible requirements:\n%s', cmd.stdout)
+
+    assert cmd.rc == 0
+    return cmd
 
 
 def _provision_with_ansible_by_ssh(container, limit, ssh_private_key_path):
