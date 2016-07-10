@@ -311,7 +311,7 @@ def _provision_with_ansible_by_ssh(container, limit, ssh_private_key_path):
         "ANSIBLE_SSH_PIPELINING=True "
         "ANSIBLE_ROLES_PATH={2}/../:{2}:{3} "
         "ansible-playbook {4} -i /tmp/{0} ./testing_deployment.yml "
-        "-e 'ansible_python_interpreter: \"/usr/bin/env python2.7\"'".format(
+        "-e 'ansible_python_interpreter=\"/usr/bin/env python2.7\"'".format(
             container.name, ssh_private_key_path,
             os.path.dirname(os.getcwd()), os.getcwd(), limit_arg))
 
