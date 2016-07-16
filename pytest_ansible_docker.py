@@ -169,7 +169,9 @@ def AnsibleDockerTestinfraBackend(request):
 
     # Run a new container. Run in privileged mode, so systemd will start
     docker_id = local_command.check_output(
-        "docker run --privileged -d -P %s", request.param)
+        "docker run --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro -d -P %s",
+        request.param
+    )
     logger.info('Test container id: %s', docker_id)
 
     def teardown():
