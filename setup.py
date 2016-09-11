@@ -13,7 +13,7 @@ def read(fname):
 
 setup(
     name='pytest-ansible-docker',
-    version='0.4.1',
+    version='0.4.2',
     author='Alexandre Chaussier',
     author_email='a.chaussier@infopen.pro',
     maintainer='Alexandre Chaussier',
