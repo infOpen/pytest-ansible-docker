@@ -258,7 +258,7 @@ def _manage_inventory_file(request, docker_id, host_ssh_port):
 
     with open('/tmp/{}'.format(docker_id), 'w') as tmp_inventory:
         for group in groups:
-            content = ("[{1}]\n{1} {0}_port={2} {0}_host={3}\n".format(
+            content = ("[{1}]\n{1} {0}_port={2} {0}_host={3} {0}_user=root\n".format(
                 ansible_prefix, group, host_ssh_port, '127.0.0.1'))
             tmp_inventory.write(content)
 
@@ -308,7 +308,6 @@ def _provision_with_ansible_by_ssh(container, limit, ssh_private_key_path):
     cmd = local_command(
         "ANSIBLE_SSH_CONTROL_PATH=./%%h-%%r "
         "ANSIBLE_PRIVATE_KEY_FILE={1} "
-        "ANSIBLE_REMOTE_USER=root "
         "ANSIBLE_HOST_KEY_CHECKING=False "
         "ANSIBLE_SSH_PIPELINING=True "
         "ANSIBLE_ROLES_PATH={2}/../:{2}:{3} "
