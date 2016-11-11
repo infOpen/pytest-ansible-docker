@@ -231,7 +231,8 @@ def _manage_ansible_provisionning(request, container):
         command = _provision_with_ansible_by_ssh(
                         container, limit, ssh_private_key_path)
 
-        assert 'changed={}'.format(idempotence_changed) in command.stdout
+        changed_value = re.search(r'changed=(\d+)', command.stdout).group(1)
+        assert int(changed_value) in range(idempotence_changed + 1)
 
 
 def _manage_inventory_file(request, docker_id, host_ssh_port):
