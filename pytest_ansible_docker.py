@@ -259,8 +259,19 @@ def _manage_inventory_file(request, docker_id, host_ssh_port):
 
     with open('/tmp/{}'.format(docker_id), 'w') as tmp_inventory:
         for group in groups:
-            content = ("[{1}]\n{1} {0}_port={2} {0}_host={3} {0}_user=root\n".format(
-                ansible_prefix, group, host_ssh_port, '127.0.0.1'))
+            content = (
+                "[{ansible_group}]\n"
+                "{docker_id} "
+                "{ansible_prefix}_port={host_ssh_port} "
+                "{ansible_prefix}_host={host_ip} "
+                "{ansible_prefix}_user=root\n".format(
+                    ansible_prefix=ansible_prefix,
+                    ansible_group=group,
+                    host_ssh_port=host_ssh_port,
+                    host_ip='127.0.0.1',
+                    docker_id=docker_id
+                )
+            )
             tmp_inventory.write(content)
 
 
